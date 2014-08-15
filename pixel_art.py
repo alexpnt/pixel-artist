@@ -1,6 +1,8 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 __author__ = 'Alexandre Pinto'
-__version__ = "1.0"
+__version__ = "1.4"
 
 from PIL import Image
 import sys,argparse
@@ -34,9 +36,6 @@ def scramble_blocks(im,granularity,ncolors):
 
 		#compute the average color of the block
 		avg=avg_color(blocks[n])
-
-		#reduce to a 8-bit color
-		eight_bit_color=(avg[0]*8/256,avg[1]*8/256,avg[2]*4/256);
 
 		#paste it	
 		new_image.paste(avg,box)
