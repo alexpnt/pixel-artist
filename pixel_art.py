@@ -29,7 +29,7 @@ def scramble_blocks(im,granularity,ncolors):
 	for n in xrange(nblocks):
 		#define the target box where to paste the new block
 		i=(n%grid_width_dim)*block_width				#i,j -> upper left point of the target image
-		j=(n/grid_height_dim)*block_height
+		j=(n/grid_width_dim)*block_height
 		box = (i,j,i+block_width,j+block_height)	
 
 		#compute the average color of the block
@@ -78,7 +78,7 @@ def get_block(im,n,block_width,block_height):
 	grid_height_dim=height/block_height						
 
 	i=(n%grid_width_dim)*block_width						#i,j -> upper left point of the target block
-	j=(n/grid_height_dim)*block_height
+	j=(n/grid_width_dim)*block_height
 
 	box = (i,j,i+block_width,j+block_height)
 	block_im = im.crop(box)
@@ -98,7 +98,7 @@ def avg_color(im):
 
 if __name__ == '__main__':
 
-	parser = argparse.ArgumentParser(description='Pixel art',epilog="A fun toy. Some images work better than others")
+	parser = argparse.ArgumentParser(description='Pixel art',epilog="A fun toy.")
 	parser.add_argument("-f","--filename",nargs=1,help="input filename",required=True)
 	parser.add_argument("-n","--ncolors",nargs=1,help="number of colors to use: 1-256",type=int,default=[256])
 	parser.add_argument("-g","--granularity",nargs=1,help="granularity to be used (>0):  a bigger value means bigger blocks",type=int,default=[1])
