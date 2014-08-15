@@ -10,6 +10,10 @@ Pixelating images
 * python 2.x
 * PIL (Python Imaging Library)
 
+##Details:###
+
+This works by simply dividing the image in equal sized blocks and assigning them the average color of the block
+
 ####Usage:####
 
     usage: pixel_art.py [-h] -f FILENAME [-n NCOLORS] [-g GRANULARITY] [-s]
@@ -26,13 +30,10 @@ Pixelating images
       -s, --save            save the output image
      
 ####Examples:####
-**128 colors + granularity 3**
-<p align="center">
-  <img src="https://github.com/AlexPnt/pixel-art/blob/master/img/lane_pixelated_128.png"/>
-</p>
+**128 colors + granularity 4 **
 
-**128 colors + granularity 3**
-<p align="center">
-  <img src="https://github.com/AlexPnt/pixel-art/blob/master/img/tennessee_pixelated_128.png"/>
-</p>
+![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/tennessee_pixelated_4_128.png)
 
+![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/globe_pixelated_4_128.png)
+
+![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/lane_pixelated_4_128.png)
