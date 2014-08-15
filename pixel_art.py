@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = 'Alexandre Pinto'
-__version__ = "1.4"
+__version__ = "1.6"
 
 from PIL import Image
 import sys,argparse
@@ -73,7 +73,6 @@ def get_block(im,n,block_width,block_height):
 	height=im.size[1]
 
 	grid_width_dim=width/block_width						#dimension of the grid
-	grid_height_dim=height/block_height						
 
 	i=(n%grid_width_dim)*block_width						#i,j -> upper left point of the target block
 	j=(n/grid_width_dim)*block_height
