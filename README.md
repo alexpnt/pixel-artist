@@ -30,7 +30,7 @@ This works by simply dividing the image in equal sized blocks and assigning them
       -s, --save            save the output image
      
 ####Examples:####
-**128 colors + granularity 4 **
+**128 colors + granularity 4**
 
 ![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/tennessee_pixelated_4_128.png)
 
