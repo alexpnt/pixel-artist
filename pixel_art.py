@@ -129,14 +129,3 @@ if __name__ == '__main__':
 	if save:
 		print "saving to "+filename.split(".")[0]+"_pixelated.png ..."
 		new_image.save(filename.split(".")[0]+"_pixelated.png")
-
-	#gif
-	# frames=[]
-	# nframes=256
-
-	# for f in xrange(1,nframes+1):
-	# 	print "%.2f " % (f/float(nframes)*100)+"%"
-	# 	new_image=scramble_blocks(im,granularity,f)
-	# 	frames+=[new_image]
-	# 	new_image.save("gif/"+filename.split(".")[0]+"_pixelated_"+str(f)+".gif")	
-
