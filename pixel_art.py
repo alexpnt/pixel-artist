@@ -41,9 +41,8 @@ def scramble_blocks(im,granularity,ncolors):
 		new_image.paste(avg,box)
 
 
-	eight_bit_im=new_image.convert("P",palette=Image.ADAPTIVE,colors=ncolors)
-	# eight_bit_im.show()
-	return eight_bit_im
+	pixelated_im=new_image.convert("P",palette=Image.ADAPTIVE,colors=ncolors)
+	return pixelated_im
 
 #find the dimension(height or width) according to the desired granularity (a lower granularity small blocks)
 def find_block_dim(granularity,dim):
@@ -99,8 +98,8 @@ if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser(description='Pixel art',epilog="A fun toy.")
 	parser.add_argument("-f","--filename",nargs=1,help="input filename",required=True)
-	parser.add_argument("-n","--ncolors",nargs=1,help="number of colors to use: 1-256",type=int,default=[256])
-	parser.add_argument("-g","--granularity",nargs=1,help="granularity to be used (>0):  a bigger value means bigger blocks",type=int,default=[1])
+	parser.add_argument("-n","--ncolors",nargs=1,help="number of colors to use: 1-256, default=256",type=int,default=[256])
+	parser.add_argument("-g","--granularity",nargs=1,help="granularity to be used (>0):  a bigger value means bigger blocks, default=1",type=int,default=[1])
 	parser.add_argument("-s","--save",help="save the output image",action='store_true',default=False)
 
 	args=vars(parser.parse_args())

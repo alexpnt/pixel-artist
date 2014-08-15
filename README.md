@@ -23,10 +23,10 @@ This works by simply dividing the image in equal sized blocks and assigning them
       -f FILENAME, --filename FILENAME
                             input filename
       -n NCOLORS, --ncolors NCOLORS
-                            number of colors to use: 1-256
+                            number of colors to use: 1-256, default=256
       -g GRANULARITY, --granularity GRANULARITY
                             granularity to be used (>0): a bigger value means
-                            bigger blocks
+                            bigger blocks, default=1
       -s, --save            save the output image
      
 ####Examples:####
