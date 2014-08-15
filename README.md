@@ -26,4 +26,13 @@ Pixelating images
       -s, --save            save the output image
      
 ####Examples:####
+**128 colors + granularity 3**
+<p align="center">
+  <img src="https://github.com/AlexPnt/pixel-art/blob/master/img/lane_pixelated_128.png"/>
+</p>
+
+**128 colors + granularity 3**
+<p align="center">
+  <img src="https://github.com/AlexPnt/pixel-art/blob/master/img/tennessee_pixelated_128.png"/>
+</p>
 
