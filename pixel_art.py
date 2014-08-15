@@ -117,7 +117,11 @@ if __name__ == '__main__':
 		parser.print_help()
 		sys.exit()
 
-	im=Image.open(filename)
+	try:
+		im=Image.open(filename)
+	except Exception, e:
+		print "An error has ocurred: %s" %e
+		sys.exit()
 	new_image=scramble_blocks(im,granularity,ncolors)
 	new_image.show()
 	if save:
