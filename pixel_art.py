@@ -70,7 +70,6 @@ def find_block_dim(granularity,dim):
 def get_block(im,n,block_width,block_height):
 
 	width=im.size[0]
-	height=im.size[1]
 
 	grid_width_dim=width/block_width						#dimension of the grid
 
