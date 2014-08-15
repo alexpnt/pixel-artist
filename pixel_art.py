@@ -110,6 +110,9 @@ if __name__ == '__main__':
 	granularity=args['granularity'][0]
 	save=args['save']
 
+	if filename.split(".")[-1]=="png":
+		print "File format not supported. Try with a .jpg"
+		sys.exit()
 	if ncolors<1 or ncolors>256:
 		parser.print_help()
 		sys.exit()
