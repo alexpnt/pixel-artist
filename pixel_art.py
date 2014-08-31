@@ -5,9 +5,13 @@ __author__ = 'Alexandre Pinto'
 __version__ = "1.6"
 
 from PIL import Image
+import pickle
 import sys,argparse
+from colormath.color_objects import LabColor,sRGBColor
+from colormath.color_conversions import convert_color
+from colormath.color_diff import delta_e_cie1976
 
-def scramble_blocks(im,granularity,ncolors):
+def pixelate(im,granularity,ncolors,nbits,colordiff):
 	width=im.size[0]
 	height=im.size[1]
 
@@ -35,7 +39,7 @@ def scramble_blocks(im,granularity,ncolors):
 		box = (i,j,i+block_width,j+block_height)	
 
 		#compute the average color of the block
-		avg=avg_color(blocks[n])
+		avg=avg_color(blocks[n],nbits,colordiff)
 
 		#paste it	
 		new_image.paste(avg,box)
@@ -81,7 +85,8 @@ def get_block(im,n,block_width,block_height):
 	return block_im
 
 #returns the average color of a given image
-def avg_color(im):
+def avg_color(im,nbits,colordiff):
+
 	avg_r=avg_g=avg_b=0.0
 	pixels=im.getdata()
 	size=len(pixels)
@@ -90,20 +95,65 @@ def avg_color(im):
 		avg_g+=p[1]/float(size)
 		avg_b+=p[2]/float(size)
 
-	return (int(avg_r),int(avg_g),int(avg_b))
+	if nbits!=24:
+		palette=pickle.load(open( "palette/"+str(nbits)+"bit.p", "rb" ))
+		best_color=palette[0]
+		best_diff=colordiff(best_color,(avg_r,avg_g,avg_b))
+		for i in xrange(1,len(palette)):
+			candidate_diff=colordiff(palette[i],(avg_r,avg_g,avg_b))
+			if candidate_diff<best_diff:
+				best_diff=candidate_diff
+				best_color=palette[i]
+
+		return best_color
+	else:
+		return (int(avg_r),int(avg_g),int(avg_b))
+
+#calculate color difference of two pixels in the RGB space
+#the less the better
+def colordiff_rgb(pixel1,pixel2):
+
+	delta_red=pixel1[0]-pixel2[0]
+	delta_green=pixel1[1]-pixel2[1]
+	delta_blue=pixel1[2]-pixel2[2]
+
+	fit=delta_red**2+delta_green**2+delta_blue**2
+	return fit
+
+#http://python-colormath.readthedocs.org/en/latest/index.html
+#calculate color difference of two pixels in the L*ab space
+#the less the better
+#pros: better results, cons: very slow
+def colordiff_lab(pixel1,pixel2):
+
+	#convert rgb values to L*ab values
+	rgb_pixel_source=sRGBColor(pixel1[0],pixel1[1],pixel1[2],True)
+	lab_source= convert_color(rgb_pixel_source, LabColor)
+
+	rgb_pixel_palette=sRGBColor(pixel2[0],pixel2[1],pixel2[2],True)
+	lab_palette= convert_color(rgb_pixel_palette, LabColor)
+
+	#calculate delta e
+	delta_e = delta_e_cie1976(lab_source, lab_palette)
+	return delta_e
 
 if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser(description='Pixel art',epilog="A fun toy.")
 	parser.add_argument("-f","--filename",nargs=1,help="input filename",required=True)
+	parser.add_argument("-p","--nbits",nargs=1,help="number of bits of the palette, default=24",choices=[3,8,9,24],type=int,default=[24])
 	parser.add_argument("-n","--ncolors",nargs=1,help="number of colors to use: 1-256, default=256",type=int,default=[256])
 	parser.add_argument("-g","--granularity",nargs=1,help="granularity to be used (>0):  a bigger value means bigger blocks, default=1",type=int,default=[1])
+	parser.add_argument("-l","--labdiff",help="use *lab model, default=rgb",action='store_true',default=False)
 	parser.add_argument("-s","--save",help="save the output image",action='store_true',default=False)
+
 
 	args=vars(parser.parse_args())
 	filename=args['filename'][0]
+	nbits=args['nbits'][0]
 	ncolors=args['ncolors'][0]
 	granularity=args['granularity'][0]
+	colordiff=colordiff_rgb if not args['labdiff'] else colordiff_lab
 	save=args['save']
 
 	if filename.split(".")[-1]=="png":
@@ -121,7 +171,7 @@ if __name__ == '__main__':
 	except Exception, e:
 		print "An error has ocurred: %s" %e
 		sys.exit()
-	new_image=scramble_blocks(im,granularity,ncolors)
+	new_image=pixelate(im,granularity,ncolors,nbits,colordiff)
 	new_image.show()
 	if save:
 		print "saving to "+filename.split(".")[0]+"_pixelated.png ..."

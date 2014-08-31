@@ -4,11 +4,13 @@ Pixelating images
 #### Features: ####
 * Control of number of colors
 * Control of granularity
+* Color palettes
 
 
 ####Requirements:####
 * python 2.x
 * PIL (Python Imaging Library)
+* python-colormath (http://python-colormath.readthedocs.org/en/latest/index.html)
 
 ##Details:###
 
