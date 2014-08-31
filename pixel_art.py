@@ -11,7 +11,7 @@ from colormath.color_objects import LabColor,sRGBColor
 from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie1976
 
-def pixelate(im,granularity,ncolors,nbits,colordiff):
+def pixelate(im,granularity,ncolors,nbits,colordiff,verbose):
 	width=im.size[0]
 	height=im.size[1]
 
@@ -33,6 +33,8 @@ def pixelate(im,granularity,ncolors,nbits,colordiff):
 	print "building final image ..."
 	new_image=im.copy()
 	for n in xrange(nblocks):
+		if verbose:
+			print "%.2f " % (n/float(nblocks)*100)+"%"
 		#define the target box where to paste the new block
 		i=(n%grid_width_dim)*block_width				#i,j -> upper left point of the target image
 		j=(n/grid_width_dim)*block_height
@@ -145,6 +147,7 @@ if __name__ == '__main__':
 	parser.add_argument("-n","--ncolors",nargs=1,help="number of colors to use: 1-256, default=256",type=int,default=[256])
 	parser.add_argument("-g","--granularity",nargs=1,help="granularity to be used (>0):  a bigger value means bigger blocks, default=1",type=int,default=[1])
 	parser.add_argument("-l","--labdiff",help="use *lab model, default=rgb",action='store_true',default=False)
+	parser.add_argument("-v","--verbose",help="show progress",action='store_true',default=False)
 	parser.add_argument("-s","--save",help="save the output image",action='store_true',default=False)
 
 
@@ -154,6 +157,7 @@ if __name__ == '__main__':
 	ncolors=args['ncolors'][0]
 	granularity=args['granularity'][0]
 	colordiff=colordiff_rgb if not args['labdiff'] else colordiff_lab
+	verbose=args['verbose']
 	save=args['save']
 
 	if filename.split(".")[-1]=="png":
@@ -171,7 +175,7 @@ if __name__ == '__main__':
 	except Exception, e:
 		print "An error has ocurred: %s" %e
 		sys.exit()
-	new_image=pixelate(im,granularity,ncolors,nbits,colordiff)
+	new_image=pixelate(im,granularity,ncolors,nbits,colordiff,verbose)
 	new_image.show()
 	if save:
 		print "saving to "+filename.split(".")[0]+"_pixelated.png ..."
