@@ -37,8 +37,8 @@ This works by simply dividing the image in equal sized blocks and assigning them
 
      
 ####Examples:####
-**128 colors + granularity 4**
+
+![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/globe_pixelated_g2_p3.png)
 
 ![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/tennessee_pixelated_p9_g2.png)
 
-![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/globe_pixelated_g2_p3.png)
