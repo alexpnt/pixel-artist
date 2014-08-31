@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 __author__ = 'Alexandre Pinto'
-__version__ = "1.6"
 
 from PIL import Image
 import pickle
@@ -98,7 +97,11 @@ def avg_color(im,nbits,colordiff):
 		avg_b+=p[2]/float(size)
 
 	if nbits!=24:
-		palette=pickle.load(open( "palette/"+str(nbits)+"bit.p", "rb" ))
+		try:
+			palette=pickle.load(open( "palette/"+str(nbits)+"bit.p", "rb" ))
+		except Exception, e:
+			print "An error has ocurred: %s" %e
+			sys.exit() 
 		best_color=palette[0]
 		best_diff=colordiff(best_color,(avg_r,avg_g,avg_b))
 		for i in xrange(1,len(palette)):
