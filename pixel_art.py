@@ -98,7 +98,7 @@ def avg_color(im,nbits,colordiff):
 
 	if nbits!=24:
 		try:
-			palette=pickle.load(open( "palette/"+str(nbits)+"bit.p", "rb" ))
+			palette=pickle.load(open( "palette/"+str(nbits)+"bit.palette", "rb" ))
 		except Exception, e:
 			print "An error has ocurred: %s" %e
 			sys.exit() 
