@@ -22,18 +22,18 @@ def pixelate(im,granularity,ncolors,nbits,colordiff,verbose):
 
 	nblocks=grid_width_dim*grid_height_dim				#number of blocks
 
-	print "nblocks: ",nblocks," block width: ",block_width," block height: ",block_height
-	print "getting all the blocks ..."
+	print("nblocks: ",nblocks," block width: ",block_width," block height: ",block_height)
+	print("getting all the blocks ...")
 	blocks=[]
 	for n in xrange(nblocks): #get all the image blocks
 		blocks+=[get_block(im,n,block_width,block_height)]
 
 
-	print "building final image ..."
+	print("building final image ...")
 	new_image=im.copy()
 	for n in xrange(nblocks):
 		if verbose:
-			print "%.2f " % (n/float(nblocks)*100)+"%"
+			print(f"{(n/float(nblocks)*100):.2f}%")
 		#define the target box where to paste the new block
 		i=(n%grid_width_dim)*block_width				#i,j -> upper left point of the target image
 		j=(n/grid_width_dim)*block_height
@@ -100,7 +100,7 @@ def avg_color(im,nbits,colordiff):
 		try:
 			palette=pickle.load(open( "palette/"+str(nbits)+"bit.palette", "rb" ))
 		except Exception, e:
-			print "An error has ocurred: %s" %e
+			print(f"An error has ocurred: {e}")
 			sys.exit() 
 		best_color=palette[0]
 		best_diff=colordiff(best_color,(avg_r,avg_g,avg_b))
@@ -164,7 +164,7 @@ if __name__ == '__main__':
 	save=args['save']
 
 	if filename.split(".")[-1]=="png":
-		print "File format not supported. Try with a .jpg"
+		print("File format not supported. Try with a .jpg")
 		sys.exit()
 	if ncolors<1 or ncolors>256:
 		parser.print_help()
@@ -176,10 +176,10 @@ if __name__ == '__main__':
 	try:
 		im=Image.open(filename)
 	except Exception, e:
-		print "An error has ocurred: %s" %e
+		print(f"An error has ocurred: {e}")
 		sys.exit()
 	new_image=pixelate(im,granularity,ncolors,nbits,colordiff,verbose)
 	new_image.show()
 	if save:
-		print "saving to "+filename.split(".")[0]+"_pixelated.png ..."
+		print("saving to "+filename.split(".")[0]+"_pixelated.png ...")
 		new_image.save(filename.split(".")[0]+"_pixelated.png")
