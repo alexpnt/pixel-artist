@@ -6,16 +6,16 @@ Pixelating images
 * Color palettes
 
 
-####Requirements:####
+#### Requirements: ####
 * python 2.x
 * PIL (Python Imaging Library)
 * python-colormath (http://python-colormath.readthedocs.org/en/latest/index.html)
 
-##Details:###
+## Details: ###
 
 This works by simply dividing the image in equal sized blocks and assigning them the average color of the block
 
-####Usage:####
+#### Usage: ####
 
     usage: pixel_art.py [-h] -f FILENAME [-p {3,8,9,24}] [-n NCOLORS]
                         [-g GRANULARITY] [-l] [-v] [-s]
@@ -36,7 +36,7 @@ This works by simply dividing the image in equal sized blocks and assigning them
       -s, --save            save the output image
 
      
-####Examples:####
+#### Examples: ####
 
 ![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/globe_pixelated_g2_p3.png)
 
