@@ -81,6 +81,9 @@ target/
 profile_default/
 ipython_config.py
 
+# Jetbrains
+.idea
+
 # pyenv
 .python-version
 
@@ -105,7 +108,7 @@ celerybeat.pid
 .env
 .venv
 env/
-venv/
+venv*/
 ENV/
 env.bak/
 venv.bak/
