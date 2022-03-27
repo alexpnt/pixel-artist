@@ -4,6 +4,7 @@
 __author__ = 'Alexandre Pinto'
 
 import argparse
+import logging.config
 import pickle
 import sys
 
@@ -12,33 +13,41 @@ from colormath.color_conversions import convert_color
 from colormath.color_diff import delta_e_cie1976
 from colormath.color_objects import LabColor, sRGBColor
 
+from settings import LOGGING_CONFIG
+
+logging.config.dictConfig(LOGGING_CONFIG)
+logger = logging.getLogger(__name__)
+
 
 def pixelate(im, granularity, ncolors, nbits, colordiff, verbose):
-    width = im.size[0]
-    height = im.size[1]
+    width, height = im.size[0], im.size[1]
+    logger.debug(f"Input image dimensions -> {width=}, {height=}")
 
     block_width = find_block_dim(granularity, width)  # find the possible block dimensions
     block_height = find_block_dim(granularity, height)
+    logger.debug(f"Block dimensions -> {block_width=}, {block_height=}")
 
-    grid_width_dim = width // block_width  # dimension of the grid
-    grid_height_dim = height // block_height
+    grid_width = width // block_width  # dimension of the grid
+    grid_height = height // block_height
+    logger.debug(f"Grid dimensions -> {grid_width=}, {grid_height=}")
 
-    nblocks = grid_width_dim * grid_height_dim  # number of blocks
+    nblocks = grid_width * grid_height  # number of blocks
+    logger.debug(f"Number of blocks -> {nblocks=}")
 
-    print("nblocks: ", nblocks, " block width: ", block_width, " block height: ", block_height)
-    print("getting all the blocks ...")
+    logger.info(f"Fetching image blocks")
     blocks = []
     for n in range(nblocks):  # get all the image blocks
         blocks += [get_block(im, n, block_width, block_height)]
 
-    print("building final image ...")
+    logger.info("Building pixelated image ...")
     new_image = im.copy()
     for n in range(int(nblocks)):
         if verbose:
-            print(f"{(n / nblocks * 100):.2f}%")
+            logger.info(f"{(n / nblocks * 100):.2f}%")
+
         # define the target box where to paste the new block
-        i = (n % grid_width_dim) * block_width  # i,j -> upper left point of the target image
-        j = n // grid_width_dim * block_height
+        i = (n % grid_width) * block_width  # i,j -> upper left point of the target image
+        j = n // grid_width * block_height
         box = (i, j, i + block_width, j + block_height)
 
         # compute the average color of the block
@@ -57,7 +66,7 @@ def find_block_dim(granularity, dim):
     candidate = 0
     block_dim = 1
     counter = 0
-    while counter != granularity:  # while we dont achive the desired granularity
+    while counter != granularity:  # while we dont achieve the desired granularity
         candidate += 1
         while ((dim % candidate) != 0):
             candidate += 1
@@ -66,7 +75,7 @@ def find_block_dim(granularity, dim):
                 break
 
         if candidate <= dim:
-            block_dim = candidate  # save the current feasible lenght
+            block_dim = candidate  # save the current feasible length
 
         counter += 1
 
@@ -78,10 +87,10 @@ def find_block_dim(granularity, dim):
 def get_block(im, n, block_width, block_height):
     width = im.size[0]
 
-    grid_width_dim = width / block_width  # dimension of the grid
+    grid_width = width / block_width  # dimension of the grid
 
-    i = (n % grid_width_dim) * block_width  # i,j -> upper left point of the target block
-    j = (n / grid_width_dim) * block_height
+    i = (n % grid_width) * block_width  # i,j -> upper left point of the target block
+    j = (n / grid_width) * block_height
 
     box = (i, j, i + block_width, j + block_height)
     block_im = im.crop(box)
@@ -101,8 +110,8 @@ def avg_color(im, nbits, colordiff):
     if nbits != 24:
         try:
             palette = pickle.load(open("palette/" + str(nbits) + "bit.palette", "rb"))
-        except Exception as e:
-            print(f"An error has ocurred: {e}")
+        except Exception:
+            logger.exception(f"An error has occurred while loading color palette")
             sys.exit()
         best_color = palette[0]
         best_diff = colordiff(best_color, (avg_r, avg_g, avg_b))
@@ -146,7 +155,6 @@ def colordiff_lab(pixel1, pixel2):
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser(description='Pixel art', epilog="A fun toy.")
     parser.add_argument("-f", "--filename", nargs=1, help="input filename", required=True)
     parser.add_argument("-p", "--nbits", nargs=1, help="number of bits of the palette, default=24",
