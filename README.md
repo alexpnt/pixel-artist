@@ -1,21 +1,19 @@
-Pixelating images
+Pixel Artist: Turn images into beautiful pixelated images 
 ===================================
 
-#### Features: ####
-* Control of granularity
+## Requirements
+
+* Python >= 3.5
+* [Pillow](https://github.com/python-pillow/Pillow)
+* [colormath](https://github.com/gtaylor/python-colormath)
+
+## Features
+* Block granularity
 * Color palettes
+* Color spaces (RGB and L\*a\*b) 
+* Number of colors
 
-
-#### Requirements: ####
-* python 2.x
-* PIL (Python Imaging Library)
-* python-colormath (http://python-colormath.readthedocs.org/en/latest/index.html)
-
-## Details: ###
-
-This works by simply dividing the image in equal sized blocks and assigning them the average color of the block
-
-#### Usage: ####
+## Usage
 
     usage: pixel_art.py [-h] -f FILENAME [-p {3,8,9,24}] [-n NCOLORS]
                         [-g GRANULARITY] [-l] [-v] [-s]
@@ -36,9 +34,18 @@ This works by simply dividing the image in equal sized blocks and assigning them
       -s, --save            save the output image
 
      
-#### Examples: ####
+##  Examples
 
 ![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/globe_pixelated_g2_p3.png)
 
 ![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/tennessee_pixelated_p9_g2.png)
 
+## Implementation details
+
+The pixel-artist command line tool works by dividing the image in equal sized blocks 
+and assigning them the average color of the block. 
+Optionally, the size of the blocks can be configured as well the available colors.
+
+## Contributing
+
+[Github issues](https://github.com/alexpnt/pixel-artist/issues) are open for feature requests and bug reports. Feel free to submit a [pull request](https://github.com/alexpnt/pixel-artist/pulls) with your enhancement proposal.
