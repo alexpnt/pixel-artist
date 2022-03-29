@@ -1,5 +1,5 @@
-Pixel Artist: Turn images into beautiful pixelated images 
-===================================
+# Pixel Artist: Turn images into beautiful pixelated images 
+
 
 ## Requirements
 
