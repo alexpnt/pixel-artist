@@ -1,5 +1,8 @@
 # Pixel Artist: Turn images into beautiful pixelated images 
 
+**Pixel Artist** is a command line tool that allows the creation of pixelated
+images with customizable levels of granularity (size of the visible pixels). 
+Turning images into beautiful works of art is as easy as calling a single command.
 
 ## Requirements
 
@@ -15,7 +18,7 @@
 
 ## Usage
 
-    usage: pixel_art.py [-h] -f FILENAME [-p {3,8,9,24}] [-n NCOLORS]
+    usage: pixel_artist.py [-h] -f FILENAME [-p {3,8,9,24}] [-n NCOLORS]
                         [-g GRANULARITY] [-l] [-v] [-s]
 
     optional arguments:
