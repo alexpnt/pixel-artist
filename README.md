@@ -2,7 +2,9 @@
 
 **Pixel Artist** is a command line tool that allows the creation of pixelated
 images with customizable levels of granularity (size of the visible pixels). 
-Turning images into beautiful works of art is as easy as calling a single command.
+Turning images into beautiful works of art that bring back nostalgic feelings 
+from the early days of computer graphics is now easy as calling a single command.
+
 
 ## Requirements
 
