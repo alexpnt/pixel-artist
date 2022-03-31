@@ -3,7 +3,7 @@
 
 ## Requirements
 
-* Python >= 3.5
+* [Python +3.5](https://www.python.org/)
 * [Pillow](https://github.com/python-pillow/Pillow)
 * [colormath](https://github.com/gtaylor/python-colormath)
 
