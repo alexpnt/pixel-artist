@@ -8,7 +8,7 @@ from the early days of computer graphics is now easy as calling a single command
 
 ## Requirements
 
-* [Python +3.5](https://www.python.org/)
+* [Python 3.6+](https://www.python.org/)
 * [Pillow](https://github.com/python-pillow/Pillow)
 * [colormath](https://github.com/gtaylor/python-colormath)
 
