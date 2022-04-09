@@ -37,6 +37,11 @@ setup(
     url=about.__url__,
     license=about.__license__,
     packages=find_packages(where=".", exclude=["tests", "venv*"]),
+    entry_points={
+        'console_scripts': [
+            'pixel-artist = pixel_artist.__main__:main',
+        ],
+    },
     python_requires=">=3.6",
     include_package_data=True,
     install_requires=install_requires,
