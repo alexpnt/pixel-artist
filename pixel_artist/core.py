@@ -1,5 +1,6 @@
 import pickle
 import sys
+from typing import Callable, Tuple
 
 from PIL import Image
 from colormath.color_conversions import convert_color
@@ -7,7 +8,7 @@ from colormath.color_diff import delta_e_cie1976
 from colormath.color_objects import LabColor, sRGBColor
 
 
-def pixelate(filename, granularity, ncolors, nbits, colordiff_fn, verbose):
+def pixelate(filename: str, granularity: int, ncolors: int, nbits: int, colordiff_fn: str, verbose: bool) -> Image:
 	try:
 		im = Image.open(filename)
 	except Exception as e:
@@ -15,29 +16,33 @@ def pixelate(filename, granularity, ncolors, nbits, colordiff_fn, verbose):
 		sys.exit()
 
 	width, height = im.size[0], im.size[1]
-	print(f"Input image dimensions -> {width=}, {height=}")
+	if verbose:
+		print(f"Input image dimensions -> width={width}, height={height}")
 
 	block_width = find_block_dim(granularity, width)  # find the possible block dimensions
 	block_height = find_block_dim(granularity, height)
-	print(f"Block dimensions -> {block_width=}, {block_height=}")
+	if verbose:
+		print(f"Block dimensions -> width={block_width}, height={block_height}")
 
 	grid_width = width // block_width  # dimension of the grid
 	grid_height = height // block_height
-	print(f"Grid dimensions -> {grid_width=}, {grid_height=}")
+	if verbose:
+		print(f"Grid dimensions -> width={grid_width}, height={grid_height}")
 
 	nblocks = grid_width * grid_height  # number of blocks
-	print(f"Number of blocks -> {nblocks=}")
+	if verbose:
+		print(f"Number of blocks -> {nblocks}")
 
-	print(f"Fetching image blocks")
+	if verbose:
+		print(f"Fetching image blocks")
 	blocks = []
 	for n in range(nblocks):  # get all the image blocks
 		blocks += [get_block(im, n, block_width, block_height)]
 
-	print("Building pixelated image ...")
 	new_image = im.copy()
 	for n in range(int(nblocks)):
 		if verbose:
-			print(f"{(n / nblocks * 100):.2f}%")
+			print(f"Building pixelated image:  {(n / nblocks * 100):.2f} %", end="\r")
 
 		# define the target box where to paste the new block
 		i = (n % grid_width) * block_width  # i,j -> upper left point of the target image
@@ -50,13 +55,14 @@ def pixelate(filename, granularity, ncolors, nbits, colordiff_fn, verbose):
 
 		# paste it
 		new_image.paste(avg, box)
-
+	if verbose:
+		print()
 	pixelated_im = new_image.convert("P", palette=Image.ADAPTIVE, colors=ncolors)
 	return pixelated_im
 
 
 # find the dimension(height or width) according to the desired granularity (a lower granularity small blocks)
-def find_block_dim(granularity, dim):
+def find_block_dim(granularity: int, dim: int) -> int:
 	assert (granularity > 0)
 	candidate = 0
 	block_dim = 1
@@ -79,7 +85,7 @@ def find_block_dim(granularity, dim):
 
 
 # get a block of the image
-def get_block(im, n, block_width, block_height):
+def get_block(im: Image, n: int, block_width: int, block_height: int) -> Image:
 	width = im.size[0]
 
 	grid_width = width / block_width  # dimension of the grid
@@ -93,7 +99,7 @@ def get_block(im, n, block_width, block_height):
 
 
 # returns the average color of a given image
-def avg_color(im, nbits, colordiff):
+def avg_color(im: Image, nbits: int, colordiff: Callable) -> Tuple:
 	avg_r = avg_g = avg_b = 0.0
 	pixels = im.getdata()
 	size = len(pixels)
@@ -123,7 +129,7 @@ def avg_color(im, nbits, colordiff):
 
 # calculate color difference of two pixels in the RGB space
 # the less the better
-def colordiff_rgb(pixel1, pixel2):
+def colordiff_rgb(pixel1: Tuple, pixel2: Tuple) -> int:
 	delta_red = pixel1[0] - pixel2[0]
 	delta_green = pixel1[1] - pixel2[1]
 	delta_blue = pixel1[2] - pixel2[2]
@@ -136,7 +142,7 @@ def colordiff_rgb(pixel1, pixel2):
 # calculate color difference of two pixels in the L*ab space
 # the less the better
 # pros: better results, cons: very slow
-def colordiff_lab(pixel1, pixel2):
+def colordiff_lab(pixel1: Tuple, pixel2: Tuple) -> float:
 	# convert rgb values to L*ab values
 	rgb_pixel_source = sRGBColor(pixel1[0], pixel1[1], pixel1[2], True)
 	lab_source = convert_color(rgb_pixel_source, LabColor)
