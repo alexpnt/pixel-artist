@@ -3,7 +3,7 @@
 import sys
 
 from .constants import SUCCESS
-from .core import pixelate
+from .core import PixelArt
 from .parser import build_parser, parse_args
 
 
@@ -13,12 +13,14 @@ def main() -> None:
 	arg_parser = build_parser()
 	args = parse_args(arg_parser)
 
-	pixelated_image = pixelate(args['filename'],
-							   args['granularity'],
-							   args['ncolors'],
-							   args['nbits'],
-							   args["colordiff_fn"],
-							   args['verbose'])
+	pixel_art = PixelArt(args['filename'],
+						 args['granularity'],
+						 args['ncolors'],
+						 args['nbits'],
+						 args["color_space"],
+						 args['verbose'])
+
+	pixelated_image = pixel_art.pixelate()
 	pixelated_image.show()
 	if args['save']:
 		if args['verbose']:

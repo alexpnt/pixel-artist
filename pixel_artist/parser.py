@@ -1,6 +1,8 @@
 import sys
 from argparse import ArgumentParser
 
+from .constants import RGB, LAB
+
 
 def build_parser() -> ArgumentParser:
 	parser = ArgumentParser(description='Pixel art', epilog="A fun toy.")
@@ -12,7 +14,7 @@ def build_parser() -> ArgumentParser:
 	parser.add_argument("-g", "--granularity", nargs=1,
 						help="granularity to be used (>0): a bigger value means bigger blocks, default=1", type=int,
 						default=[1])
-	parser.add_argument("-l", "--labdiff", help="use *lab model, default=rgb", action='store_true', default=False)
+	parser.add_argument("-l", "--lab", help="use *lab model, default=rgb", action='store_true', default=False)
 	parser.add_argument("-v", "--verbose", help="show progress", action='store_true', default=False)
 	parser.add_argument("-s", "--save", help="save the output image", action='store_true', default=False)
 
@@ -24,7 +26,7 @@ def validate_args(parser: ArgumentParser, args: dict) -> dict:
 	nbits = args['nbits'][0]
 	ncolors = args['ncolors'][0]
 	granularity = args['granularity'][0]
-	colordiff_fn = "colordiff_rgb" if not args['labdiff'] else "colordiff_lab"
+	color_space = RGB if not args['lab'] else LAB
 	verbose = args["verbose"]
 	save = args["save"]
 
@@ -50,7 +52,7 @@ def validate_args(parser: ArgumentParser, args: dict) -> dict:
 		"nbits": nbits,
 		"ncolors": ncolors,
 		"granularity": granularity,
-		"colordiff_fn": colordiff_fn,
+		"color_space": color_space,
 		"verbose": verbose,
 		"save": save
 	}
