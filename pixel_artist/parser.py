@@ -1,16 +1,16 @@
-import argparse
 import sys
+from argparse import ArgumentParser
 
 
-def build_parser():
-	parser = argparse.ArgumentParser(description='Pixel art', epilog="A fun toy.")
+def build_parser() -> ArgumentParser:
+	parser = ArgumentParser(description='Pixel art', epilog="A fun toy.")
 	parser.add_argument("-f", "--filename", nargs=1, help="input filename", required=True)
 	parser.add_argument("-p", "--nbits", nargs=1, help="number of bits of the palette, default=24",
 						choices=[3, 8, 9, 24], type=int, default=[24])
 	parser.add_argument("-n", "--ncolors", nargs=1, help="number of colors to use: 1-256, default=256", type=int,
 						default=[256])
 	parser.add_argument("-g", "--granularity", nargs=1,
-						help="granularity to be used (>0):  a bigger value means bigger blocks, default=1", type=int,
+						help="granularity to be used (>0): a bigger value means bigger blocks, default=1", type=int,
 						default=[1])
 	parser.add_argument("-l", "--labdiff", help="use *lab model, default=rgb", action='store_true', default=False)
 	parser.add_argument("-v", "--verbose", help="show progress", action='store_true', default=False)
@@ -19,13 +19,13 @@ def build_parser():
 	return parser
 
 
-def validate_args(parser, args):
+def validate_args(parser: ArgumentParser, args: dict) -> dict:
 	filename = args['filename'][0]
 	nbits = args['nbits'][0]
 	ncolors = args['ncolors'][0]
 	granularity = args['granularity'][0]
 	colordiff_fn = "colordiff_rgb" if not args['labdiff'] else "colordiff_lab"
-	verbose =args["verbose"]
+	verbose = args["verbose"]
 	save = args["save"]
 
 	valid = True
@@ -57,7 +57,7 @@ def validate_args(parser, args):
 	return validated_args
 
 
-def parse_args(parser):
+def parse_args(parser: ArgumentParser) -> dict:
 	args = vars(parser.parse_args())
 	args = validate_args(parser, args)
 	return args

@@ -1,5 +1,5 @@
 __name__ = 'pixel-artist'
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __author__ = "Alexandre Pinto"
 __author_email__ = "alexandpinto@gmail.com"
 __description__ = 'A command line utility to build pixelated images.'

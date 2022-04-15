@@ -8,7 +8,8 @@ from .parser import build_parser, parse_args
 
 
 def main() -> None:
-	"""Parses the command line arguments and bootstraps the project."""
+	"""Parses the command line arguments and runs the tool."""
+
 	arg_parser = build_parser()
 	args = parse_args(arg_parser)
 
@@ -20,8 +21,11 @@ def main() -> None:
 							   args['verbose'])
 	pixelated_image.show()
 	if args['save']:
-		print("Saving to " + args['filename'].split(".")[0] + "_pixelated.png ...")
-		pixelated_image.save(args['filename'].split(".")[0] + "_pixelated.png")
+		if args['verbose']:
+			print("Saving to " + args['filename'].split(".")[0] + "_pixelated.png ...")
+			pixelated_image.save(args['filename'].split(".")[0] + "_pixelated.png")
+	if args['verbose']:
+		print('Done')
 
 	return SUCCESS
 
