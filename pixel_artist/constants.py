@@ -1,1 +1,3 @@
+LAB = "LAB"
+RGB = "RGB"
 SUCCESS = 0
