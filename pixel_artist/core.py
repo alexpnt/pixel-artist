@@ -50,22 +50,20 @@ class PixelArt:
 			print(f"Block dimensions -> width={self.block_width}, height={self.block_height}")
 
 		# dimension of the grid
-		self.grid_width = self.width / self.block_width
-		self.grid_height = self.height / self.block_height
+		self.grid_width = self.width // self.block_width
+		self.grid_height = self.height // self.block_height
 		if self.verbose:
 			print(f"Grid dimensions -> width={self.grid_width}, height={self.grid_height}")
 
 		# number of blocks
 		self.nblocks = self.grid_width * self.grid_height
 		if self.verbose:
-			print(f"Number of blocks -> {self.nblocks}")
+			print(f"Fetching {self.nblocks} image blocks")
 
-		# get all the image blocks
-		if self.verbose:
-			print(f"Fetching image blocks")
+		# fetch all the image blocks
 		self.blocks = []
 		for i in range(int(self.nblocks)):
-			self.blocks += [self.get_ith_block(i)]
+			self.blocks.append(self.get_block_at_pos(i))
 
 	# find the dimension(height or width) according to the desired granularity (a lower granularity small blocks)
 	def find_block_dim(self, dim: int) -> int:
@@ -95,28 +93,29 @@ class PixelArt:
 				print(f"Building pixelated image:  {(i / self.nblocks * 100):.2f} %", end="\r")
 
 			# define the target box where to paste the new block
-			bbox = self.get_ith_bbox(i)
-			bbox = tuple(int(b) for b in bbox)
+			bbox = self.get_bbox_at_pos(i)
 
 			# compute the average color of the block
-			avg = self.avg_color(self.blocks[i])
+			avg_color = tuple(round(c) for c in self.avg_color(self.blocks[i]))
 
 			# paste it
-			pixelated_im.paste(avg, bbox)
+			pixelated_im.paste(avg_color, bbox)
+
 		if self.verbose:
 			print()
 		pixelated_im = pixelated_im.convert("P", palette=Image.ADAPTIVE, colors=self.ncolors)
 		return pixelated_im
 
-	# get the ith block of the image
-	def get_ith_block(self, i: int) -> Image:
-		bbox = self.get_ith_bbox(i)
+	# get the block at the ith position of the image
+	def get_block_at_pos(self, pos: int) -> Image:
+		bbox = self.get_bbox_at_pos(pos)
 		block_im = self.im.crop(bbox)
+
 		return block_im
 
-	def get_ith_bbox(self, i: int) -> Tuple:
-		i = (i % self.grid_width) * self.block_width  # i,j -> upper left point of the target block
-		j = (i / self.grid_width) * self.block_height
+	def get_bbox_at_pos(self, pos: int) -> Tuple:
+		i = (pos % self.grid_width) * self.block_width  # i,j -> upper left point of the target block
+		j = (pos // self.grid_width) * self.block_height
 
 		bbox = (i, j, i + self.block_width, j + self.block_height)
 
@@ -127,6 +126,7 @@ class PixelArt:
 		avg_r = avg_g = avg_b = 0.0
 		pixels = im.getdata()
 		size = len(pixels)
+
 		for p in pixels:
 			avg_r += p[0] / size
 			avg_g += p[1] / size
@@ -143,7 +143,7 @@ class PixelArt:
 
 			return best_color
 		else:
-			return int(avg_r), int(avg_g), int(avg_b)
+			return avg_r, avg_g, avg_b
 
 	def colordiff(self, pixel1: Tuple, pixel2: Tuple) -> Union[int, float]:
 		if self.color_space == LAB:
