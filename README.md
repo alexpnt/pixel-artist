@@ -40,10 +40,43 @@ from the early days of computer graphics is now easy as calling a single command
 
      
 ##  Examples
+```bash
+$ pixel-artist -f img/globe.jpg -g 2 -p 3
+
+Input image dimensions -> width=800, height=600
+Block dimensions -> width=2, height=2
+Grid dimensions -> width=400, height=300
+Fetching 120000 image blocks
+Building pixelated image:  100.00 %
+Done
+```
 
 ![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/globe_pixelated_g2_p3.png)
 
-![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/tennessee_pixelated_p9_g2.png)
+```bash
+$ pixel-artist -f img/tennessee.jpg -g 4 -n 128 -v
+
+Input image dimensions -> width=800, height=600
+Block dimensions -> width=5, height=4
+Grid dimensions -> width=160, height=150
+Fetching 24000 image blocks
+Building pixelated image:  100.00 %
+Done
+```
+![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/tennessee_pixelated_g4_n128.png)
+
+```bash
+$ pixel-artist -f img/lane.jpg -g 4 -n 128  -v
+
+Input image dimensions -> width=800, height=600
+Block dimensions -> width=5, height=4
+Grid dimensions -> width=160, height=150
+Fetching 24000 image blocks
+Building pixelated image:  100.00 %
+Done
+
+```
+![eg](https://raw.githubusercontent.com/AlexPnt/pixel-art/master/img/lane_pixelated_g4_n128.png)
 
 ## Implementation details
 
