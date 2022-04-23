@@ -18,11 +18,27 @@ from the early days of computer graphics is now easy as calling a single command
 * Color spaces (RGB and L\*a\*b) 
 * Number of colors
 
+##  Installation
+
+### Latest stable version From PyPI
+```bash
+$ pip instal pixel-artist
+```
+
+### Latest development version
+```bash
+$ git clone https://github.com/alexpnt/pixel-artist.git
+$ pip install -e pixel-artist
+```
+
+
 ## Usage
 
-    usage: pixel_artist.py [-h] -f FILENAME [-p {3,8,9,24}] [-n NCOLORS]
+    usage: pixel-artist [-h] -f FILENAME [-p {3,8,9,24}] [-n NCOLORS] 
                         [-g GRANULARITY] [-l] [-v] [-s]
-
+    
+    Pixel art
+    
     optional arguments:
       -h, --help            show this help message and exit
       -f FILENAME, --filename FILENAME
@@ -32,11 +48,11 @@ from the early days of computer graphics is now easy as calling a single command
       -n NCOLORS, --ncolors NCOLORS
                             number of colors to use: 1-256, default=256
       -g GRANULARITY, --granularity GRANULARITY
-                            granularity to be used (>0): a bigger value means
-                            bigger blocks, default=1
-      -l, --labdiff         use *lab model, default=rgb
+                            granularity to be used (>0): a bigger value means bigger blocks, default=1
+      -l, --lab             use *lab model, default=rgb
       -v, --verbose         show progress
       -s, --save            save the output image
+
 
      
 ##  Examples
