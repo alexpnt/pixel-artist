@@ -57,7 +57,7 @@ $ pip install -e pixel-artist
      
 ##  Examples
 ```bash
-$ pixel-artist -f img/globe.jpg -g 2 -p 3
+$ pixel-artist -f img/globe.jpg -g 2 -p 3 -v
 
 Input image dimensions -> width=800, height=600
 Block dimensions -> width=2, height=2
