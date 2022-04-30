@@ -2,3 +2,5 @@
 Pillow==9.0.1
 colormath==3.0.0
 pyment==0.33
+Sphinx==4.5.0
+furo==2022.4.7
