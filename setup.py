@@ -17,7 +17,7 @@ def _load_module_from_src(mod_name, mod_fname, pkg_dir=""):
 
 about = _load_module_from_src("about", "__about__", "pixel_artist")
 install_requires = [
-    "Pillow==9.0.1",
+    "Pillow==9.3.0",
     "colormath==3.0.0"
 ]
 
