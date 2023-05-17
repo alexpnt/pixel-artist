@@ -22,7 +22,7 @@ from the early days of computer graphics is now easy as calling a single command
 
 ### Latest stable version From PyPI
 ```bash
-$ pip instal pixel-artist
+$ pip install pixel-artist
 ```
 
 ### Latest development version
